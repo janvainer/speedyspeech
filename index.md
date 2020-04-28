@@ -1,5 +1,5 @@
 ## Welcome to GitHub Pages
-[audio1](/0.wav)
+<audio ref='themeSong' src="/0.wav" autoPlay loop></audio>
 
 You can use the [editor on GitHub](https://github.com/janvainer/thesis-samples/edit/master/index.md) to maintain and preview the content for your website in Markdown files.
 
