@@ -1,0 +1,12 @@
+.idea
+venv
+__pycache__
+*.egg-info
+*.log
+code/datasets/data/*
+logs*
+logs2*
+train_on_cluster.sh
+audios/
+*playground*
+*.pt
