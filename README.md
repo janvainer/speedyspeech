@@ -1,3 +1,7 @@
+### Audio samples 
+
+Audio samples can be found [here](https://janvainer.github.io/efficient-neural-speech-synthesis/)
+
 ### Installation instructions
 The code was tested with `python 3.7.3` and `cuda 10.0.130`.
 
