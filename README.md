@@ -47,7 +47,8 @@ git checkout 36d5071
 
 2. Run inference
 ```
-echo "One sentence. \nAnother sentence. | python code/inference.py <speedyspeech_checkpoint> <melgan_checkpoint> --audio_folder ~/audio
+mkdir synthesized_audio
+echo "One sentence. \nAnother sentence. | python code/inference.py <speedyspeech_checkpoint> <melgan_checkpoint> --audio_folder ~/synthesized_audio
 cat text.txt | python code/inference.py <speedyspeech_checkpoint> <melgan_checkpoint> --device cuda
 ```
 Files wil be added to the audio folder. The model does not handle numbers. please write everything in words.
