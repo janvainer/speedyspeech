@@ -21,7 +21,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("speedyspeech_checkpoint", type=str, help="Checkpoint file for speedyspeech model")
 parser.add_argument("melgan_checkpoint", type=str, help="Checkpoint file for MelGan.")
 parser.add_argument("--device", type=str, default='cuda' if torch.cuda.is_available() else 'cpu',  help="What device to use.")
-parser.add_argument("--audio_folder", type=str, default="audio", help="Where to save audios")
+parser.add_argument("--audio_folder", type=str, default="synthesized_audio", help="Where to save audios")
 args = parser.parse_args()
 
 print('Loading model checkpoints')

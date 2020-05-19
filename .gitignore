@@ -10,4 +10,5 @@ train_on_cluster.sh
 audios/
 *playground*
 *.pt
+*.pth
 generate_index.py
