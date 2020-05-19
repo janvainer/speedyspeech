@@ -176,14 +176,14 @@ class Interpolate(nn.Module):
         return self.norm(xx) + x
 
 
-class FertilityModel(nn.Module):
+class SpeedySpeech(nn.Module):
     def __init__(
             self,
             adam_lr=0.02,
             standardize=True,
             device='cuda'
     ):
-        super(FertilityModel, self).__init__()
+        super(SpeedySpeech, self).__init__()
 
         self.encoder = Encoder()
         self.decoder = Decoder()
@@ -433,7 +433,7 @@ if __name__ == '__main__':
     parser.add_argument("--name", default="", type=str, help="Append to logdir name")
     args = parser.parse_args()
 
-    m = FertilityModel(
+    m = SpeedySpeech(
         adam_lr=args.adam_lr,
         standardize=args.standardize,
         device='cuda' if torch.cuda.is_available() else 'cpu'

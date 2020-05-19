@@ -10,7 +10,7 @@ from layers import WaveResidualBlock, Conv1d
 from functional import positional_encoding, median_mask, mask, idx_mask, scaled_dot_attention, display_spectr_alignment
 from losses import l1_masked, GuidedAttentionLoss
 
-from hparam import HPConvTacotron as hp
+from hparam import HPDurationExtractor as hp
 from hparam import HPStft, HPText
 
 from utils.augment import add_random_noise, degrade_some, frame_dropout
@@ -138,7 +138,7 @@ class ScaledDotAttention(nn.Module):
         return alignment, weights
 
 
-class ConvTacotron(nn.Module):
+class DurationExtractor(nn.Module):
     def __init__(
             self,
             adam_lr=0.002,
@@ -147,7 +147,7 @@ class ConvTacotron(nn.Module):
             guided_att_sigma=0.3,
             device='cuda'
     ):
-        super(ConvTacotron, self).__init__()
+        super(DurationExtractor, self).__init__()
 
         self.txt_encoder = ConvTextEncoder()
         self.audio_encoder = ConvAudioEncoder()
@@ -478,7 +478,7 @@ if __name__ == '__main__':
     parser.add_argument("--name", default="", type=str, help="Append to logdir name")
     args = parser.parse_args()
 
-    m = ConvTacotron(
+    m = DurationExtractor(
         adam_lr=0.002,
         warmup_epochs=30,
         device='cuda' if torch.cuda.is_available() else 'cpu'

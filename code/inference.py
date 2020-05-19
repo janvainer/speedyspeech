@@ -10,7 +10,7 @@ import argparse, sys, os, time
 import torch
 from librosa.output import write_wav
 
-from fertility_model import FertilityModel
+from speedyspeech import SpeedySpeech
 from melgan.model.generator import Generator
 from melgan.utils.hparams import HParam
 from hparam import HPStft, HPText
@@ -25,7 +25,7 @@ parser.add_argument("--audio_folder", type=str, default="audio", help="Where to 
 args = parser.parse_args()
 
 print('Loading model checkpoints')
-m = FertilityModel(
+m = SpeedySpeech(
     device=args.device
 ).load(args.fertility_checkpoint)
 m.eval()

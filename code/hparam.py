@@ -48,7 +48,7 @@ class HPFertility:
     interpolate = False # True
 
 
-class HPConvTacotron:
+class HPDurationExtractor:
     positional_encoding = True
     w = 6.42
     sigma = 0.3  # weight for guided attention

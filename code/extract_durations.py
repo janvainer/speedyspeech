@@ -136,7 +136,7 @@ if __name__ == '__main__':
     from torch.utils.data.sampler import SequentialSampler
 
     from datasets.AudioDataset import AudioDataset
-    from conv_tacotron import ConvTacotron, Collate
+    from duration_extractor import DurationExtractor, Collate
 
     parser = argparse.ArgumentParser()
     parser.add_argument("checkpoint", type=str, help="Path to checkpoint of convolutional_cacotron model")
@@ -145,7 +145,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     # Load pretrained checkpoint and extract alignments to data_folder
-    m = ConvTacotron().load(args.checkpoint)
+    m = DurationExtractor().load(args.checkpoint)
     dataset = AudioDataset(root=args.data_folder, alignments=False)
     dataloader = DataLoader(dataset, batch_size=args.batch_size, collate_fn=Collate(m.device),
                       shuffle=False, sampler=SequentialSampler(dataset))

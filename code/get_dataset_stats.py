@@ -7,7 +7,7 @@ from barbar import Bar  # progress bar
 
 from datasets.AudioDataset import AudioDataset
 from torch.utils.data import DataLoader
-from fertility_model import Collate
+from speedyspeech import Collate
 from hparam import HPText
 
 from utils.masked import masked_max, masked_min, mask, masked_mean, masked_std
