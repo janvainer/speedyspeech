@@ -1,13 +1,13 @@
 ### Audio samples 
 
-Audio samples can be found [here](https://janvainer.github.io/efficient-neural-speech-synthesis/)
+Audio samples can be found [here](https://janvainer.github.io/speedyspeech/)
 
 ### Installation instructions
 The code was tested with `python 3.7.3` and `cuda 10.0.130`.
 
 ```
-git clone https://github.com/LordOfLuck/convolutional_tts.git
-cd convolutional_tts
+git clone https://github.com/janvainer/speedyspeech.git
+cd speedyspeech
 git submodule init; git submodule update
 
 python3 -m venv venv
