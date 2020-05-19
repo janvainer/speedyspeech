@@ -18,7 +18,7 @@ from utils.text import TextProcessor
 from functional import mask
 
 parser = argparse.ArgumentParser()
-parser.add_argument("fertility_checkpoint", type=str, help="Checkpoint file for Fertility model")
+parser.add_argument("speedyspeech_checkpoint", type=str, help="Checkpoint file for speedyspeech model")
 parser.add_argument("melgan_checkpoint", type=str, help="Checkpoint file for MelGan.")
 parser.add_argument("--device", type=str, default='cuda' if torch.cuda.is_available() else 'cpu',  help="What device to use.")
 parser.add_argument("--audio_folder", type=str, default="audio", help="Where to save audios")
@@ -27,12 +27,11 @@ args = parser.parse_args()
 print('Loading model checkpoints')
 m = SpeedySpeech(
     device=args.device
-).load(args.fertility_checkpoint)
+).load(args.speedyspeech_checkpoint)
 m.eval()
 
-# TODO: relativize the paths
-checkpoint = torch.load('/media/jan/Data/models/nvidia_tacotron2_LJ11_epoch3200.pt')#args.melgan_checkpoint)
-hp = HParam('/home/jan/convolutional_tts/code/melgan/config/default.yaml')#"code/melgan/config/default.yaml")
+checkpoint = torch.load(args.melgan_checkpoint)
+hp = HParam("code/melgan/config/default.yaml")
 melgan = Generator(hp.audio.n_mel_channels).to(args.device)
 melgan.load_state_dict(checkpoint["model_g"])
 melgan.eval(inference=False)

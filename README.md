@@ -19,10 +19,10 @@ pip install -r requirements.txt
 To train the fertility model, durations of phonemes are needed.
 
 1. Download the [LJSpeech dataset](https://keithito.com/LJ-Speech-Dataset/) and unzip into `datasets/data/LJSpeech-1.1`
-2. Train the duration prediction model
+2. Train the duration extraction model
 ```
-python code/conv_tacotron.py -h  # display options
-python code/conv_tacotron.py --some_option value  # train the model, create logs for checkpoint
+python code/duration_extractor.py -h  # display options
+python code/duration_extractor.py --some_option value  # train the model, create logs for checkpoint
 tensorboard --logdir=logs  # watch the training
 ```
 3. Extract durations from the trained model - creates alignments.txt file in the LJSpeech-1.1 folder
@@ -31,8 +31,8 @@ python code/extract_durations.py logs/your_checkpoint code/datasets/data/LJSpeec
 ```
 4. Train the fertility model
 ```
-python code/fertility_model.py -h  # display options
-python code/fertility_model.py  # train the model, create logs2 for checkpoint
+python code/speedyspeech.py -h  # display options
+python code/speedyspeech.py  # train the model, create logs2 for checkpoint
 tensorboard --logdir=logs2  # watch the training
 ```
 
@@ -47,42 +47,8 @@ git checkout 36d5071
 
 2. Run inference
 ```
-echo "One sentence. \nAnother sentence. | python code/inference.py checkpoint1 checkpoint2 --audio_folder ~/audio
-cat text.txt | python code/inference.py checkpoint1 checkpoint2 --device cuda
+echo "One sentence. \nAnother sentence. | python code/inference.py <speedyspeech_checkpoint> <melgan_checkpoint> --audio_folder ~/audio
+cat text.txt | python code/inference.py <speedyspeech_checkpoint> <melgan_checkpoint> --device cuda
 ```
 Files wil be added to the audio folder. The model does not handle numbers. please write everything in words.
 The list of allowed symbols is specified in ```code/hparam.py```. 
-
-Measured inference speed for the sentence *"If you want to build a ship, 
-don't drum up people to collect wood and don't assign them tasks and work, 
-but rather teach them to long for the endless immensity of the sea."*
-The time is in seconds.
-
-#####GPU
-|batch          |spectrogram    |audio          |total          |
-|---------------|---------------|---------------|---------------|
-|1              |0.032          |0.165          |0.197          |
-|2              |0.035          |0.325          |0.359          |
-|4              |0.05           |0.647          |0.697          |
-|8              |0.097          |1.291          |1.388          |
-|16             |0.203          |4.065          |4.268          |
-
-#####CPU
-|batch          |spectrogram    |audio          |total          |
-|---------------|---------------|---------------|---------------|
-|1              |0.105          |1.702          |1.808          |
-|2              |0.137          |3.211          |3.348          |
-|4              |0.263          |6.788          |7.051          |
-|8              |0.591          |14.061         |14.652         |
-
-### MOS
-
-Total respondents:  27.0
-
-|model                    |MOS                      |95 % CI                  |
-|-------------------------|-------------------------|-------------------------|
-|fertility                |75.0                     |(-2.04, 2.04)            |
-|tacotron_2               |62.36                    |(-2.4, 2.26)             |
-|fertiliity_griffin       |46.45                    |(-2.57, 2.43)            |
-|reference                |97.98                    |(-0.83, 0.7)             |
-|deep_voice               |42.43                    |(-2.38, 2.56)            |
