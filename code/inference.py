@@ -1,11 +1,25 @@
-"""Usage
-Run from the project root.
+"""Synthesize audio from text
 
 echo "One sentence. \nAnother sentence. | python code/inference.py checkpoint1 checkpoint2 --device cuda --audio_folder ~/audio
 cat text.txt | python code/inference.py checkpoint1 checkpoint2 --device cuda
-Audios are by default saved to ~/audio
 
+Run from the project root.
+Audios are by default saved to ~/audio.
 Does not handle numbers - write everything in words.
+
+usage: inference.py [-h] [--speedyspeech_checkpoint SPEEDYSPEECH_CHECKPOINT]
+                    [--melgan_checkpoint MELGAN_CHECKPOINT] [--device DEVICE]
+                    [--audio_folder AUDIO_FOLDER]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --speedyspeech_checkpoint SPEEDYSPEECH_CHECKPOINT
+                        Checkpoint file for speedyspeech model
+  --melgan_checkpoint MELGAN_CHECKPOINT
+                        Checkpoint file for MelGan.
+  --device DEVICE       What device to use.
+  --audio_folder AUDIO_FOLDER
+                        Where to save audios
 """
 import argparse, sys, os, time
 import torch
