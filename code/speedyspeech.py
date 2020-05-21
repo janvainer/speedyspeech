@@ -1,28 +1,49 @@
+"""Train the SpeedySpeech spectrogram synthesis student model
+
+usage: speedyspeech.py [-h] [--batch_size BATCH_SIZE] [--epochs EPOCHS]
+                       [--grad_clip GRAD_CLIP] [--adam_lr ADAM_LR]
+                       [--standardize STANDARDIZE] [--name NAME]
+                       [--durations_filename DURATIONS_FILENAME]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --batch_size BATCH_SIZE
+                        Batch size
+  --epochs EPOCHS       Training epochs
+  --grad_clip GRAD_CLIP
+                        Gradient clipping value
+  --adam_lr ADAM_LR     Initial learning rate for adam
+  --standardize STANDARDIZE
+                        Standardize spectrograms
+  --name NAME           Append to logdir name
+  --durations_filename DURATIONS_FILENAME
+                        Name for extracted dutations file
+"""
+
 import itertools
 
 import torch
 import torch.nn as nn
 from torch.optim.lr_scheduler import ReduceLROnPlateau
 from torch.utils.tensorboard import SummaryWriter
+from torch.utils.data.sampler import SequentialSampler
+from torch.utils.data import DataLoader
+
 import git
 from barbar import Bar  # progress bar
 
 from layers import Conv1d, ResidualBlock, FreqNorm
 from losses import l1_masked, masked_huber, masked_ssim, l1_dtw
 from functional import mask, positional_encoding, display_spectr_alignment
+from datasets.AudioDataset import AudioDataset
+from extract_durations import fert2align
+from stft import MySTFT, pad_batch
 
 from hparam import HPFertility as hp
 from hparam import HPStft, HPText
 
 from utils.transform import map_to_tensors, Pad, StandardNorm
-from datasets.AudioDataset import AudioDataset
-from torch.utils.data import DataLoader
-from extract_durations import fert2align
-
 from utils.text import TextProcessor
-
-from stft import MySTFT, pad_batch
-from torch.utils.data.sampler import SequentialSampler
 
 
 def expand_encodings(encodings, durations):
@@ -84,6 +105,7 @@ def mask_durations(durations, plen):
 
 
 class Encoder(nn.Module):
+    """Encodes input phonemes for the duration predictor and the decoder"""
     def __init__(self):
         super(Encoder, self).__init__()
 
@@ -117,6 +139,7 @@ class Encoder(nn.Module):
 
 
 class Decoder(nn.Module):
+    """Decodes the expanded phoneme encoding into spectrograms"""
     def __init__(self):
         super(Decoder, self).__init__()
 
@@ -142,6 +165,7 @@ class Decoder(nn.Module):
 
 
 class DurationPredictor(nn.Module):
+    """Predicts phoneme log durations based on the encoder outputs"""
     def __init__(self):
         super(DurationPredictor, self).__init__()
 
@@ -161,6 +185,10 @@ class DurationPredictor(nn.Module):
 
 
 class Interpolate(nn.Module):
+    """Use multihead attention to increase variability in expanded phoneme encodings
+    
+    Not used in the final model, but used in reported experiments.
+    """
     def __init__(self):
         super(Interpolate, self).__init__()
 
@@ -177,6 +205,7 @@ class Interpolate(nn.Module):
 
 
 class SpeedySpeech(nn.Module):
+    """The SpeedySpeech student model"""
     def __init__(
             self,
             adam_lr=0.02,
@@ -255,6 +284,7 @@ class SpeedySpeech(nn.Module):
 
     # todo: make functional?
     def expand_enc(self, encodings, durations):
+        """Copy each phoneme encoding as many times as the duration predictor predicts"""
         encodings = self.pad(expand_encodings(encodings, durations))
         if hp.pos_enc:
             if hp.pos_enc == 'ours':
@@ -374,7 +404,6 @@ class SpeedySpeech(nn.Module):
             self.logger.add_figure(text[-1], fig, self.epoch)
 
             # log audio every 10 epochs
-            # TODO: make work with MelGan
             if not self.epoch % 10:
                 spec = self.collate.norm.inverse(out[-1:]) # TODO: this fails if we do not standardize!
                 sound, length = self.collate.stft.spec2wav(spec.transpose(1, 2), estimated_slen[-1:])
