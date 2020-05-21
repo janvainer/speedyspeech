@@ -38,7 +38,8 @@ git checkout 36d5071
 
 2. Download SpeedySpeech checkpoint from the latest release.
 ```
-wget https://github.com/janvainer/speedyspeech/releases/download/v0.1/speedyspeech.pth -O checkpoints/speedyspeech.pth
+wget https://github.com/janvainer/speedyspeech/releases/download/v0.1/speedyspeech.pth \
+    -O checkpoints/speedyspeech.pth
 ```
 
 2. Run inference
@@ -49,7 +50,11 @@ echo "One sentence. \nAnother sentence. | python code/inference.py --audio_folde
 The model treats each line of input as an item in a batch.
 To specify different checkpoints, what device to run on etc. use the following:
 ```
-echo "One sentence. \nAnother sentence. | python code/inference.py <speedyspeech_checkpoint> <melgan_checkpoint> --audio_folder synthesized_audio --device cuda
+echo "One sentence. \nAnother sentence. | python code/inference.py \
+    --speedyspeech_checkpoint <speedyspeech_checkpoint> \
+    --melgan_checkpoint <melgan_checkpoint> \
+    --audio_folder synthesized_audio \
+    --device cuda
 ```
 
 Files wil be added to the audio folder. The model does not handle numbers. please write everything in words.
@@ -62,8 +67,9 @@ To train the fertility model, durations of phonemes are needed.
 2. Train the duration extraction model
 ```
 python code/duration_extractor.py -h  # display options
-python code/duration_extractor.py --some_option value  # train the model, create logs for checkpoint
-tensorboard --logdir=logs  # watch the training
+python code/duration_extractor.py \
+    --some_option value
+tensorboard --logdir=logs
 ```
 3. Extract durations from the trained model - creates alignments.txt file in the LJSpeech-1.1 folder
 ```
@@ -71,7 +77,7 @@ python code/extract_durations.py logs/your_checkpoint code/datasets/data/LJSpeec
 ```
 4. Train the fertility model
 ```
-python code/speedyspeech.py -h  # display options
-python code/speedyspeech.py  # train the model, create logs2 for checkpoint
-tensorboard --logdir=logs2  # watch the training
+python code/speedyspeech.py -h
+python code/speedyspeech.py
+tensorboard --logdir=logs2
 ```
