@@ -31,7 +31,7 @@ pip install -r requirements.txt
 ```
 
 ## Inference
-**1. Download pretrained MelGAN** checkpoint and set git head to the right commit
+**1. Download pretrained MelGAN** checkpoint
 ```
 wget -O checkpoints/melgan.pth \
     https://github.com/seungwonpark/melgan/releases/download/v0.1-alpha/nvidia_tacotron2_LJ11_epoch3200.pt 
