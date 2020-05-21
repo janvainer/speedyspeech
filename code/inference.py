@@ -45,7 +45,7 @@ m = SpeedySpeech(
 ).load(args.speedyspeech_checkpoint, map_location=args.device)
 m.eval()
 
-checkpoint = torch.load(args.melgan_checkpoint)
+checkpoint = torch.load(args.melgan_checkpoint, map_location=args.device)
 hp = HParam("code/melgan/config/default.yaml")
 melgan = Generator(hp.audio.n_mel_channels).to(args.device)
 melgan.load_state_dict(checkpoint["model_g"])
