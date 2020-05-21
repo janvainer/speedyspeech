@@ -15,7 +15,7 @@ CPU.
 See our audio samples [here](https://janvainer.github.io/speedyspeech/).
 
 ### Installation instructions
-The code was tested with `python 3.7.3` and `cuda 10.0.130`.
+The code was tested with `python 3.7.3` and `cuda 10.0.130` on Ubuntu 19.04.
 
 ```
 git clone https://github.com/janvainer/speedyspeech.git
