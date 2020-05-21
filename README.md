@@ -91,3 +91,5 @@ tensorboard --logdir=logs2
 ```
 ## License
 This code is published under the BSD 3-Clause License
+1. `code/melgan` - [MelGAN](https://github.com/seungwonpark/melgan) by Seungwon Park (BSD 3-Clause License)
+2. `code/utils/stft.py` - [torch-stft](https://github.com/pseeth/torch-stft) by Prem Seetharaman (BSD 3-Clause License)
