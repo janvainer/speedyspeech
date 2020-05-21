@@ -1,6 +1,6 @@
 """The duration extraction teacher model
 
-By running this script, the duration extraction model is trained.
+Run this script to train the duration extraction model.
 
 usage: duration_extractor.py [-h] [--batch_size BATCH_SIZE] [--epochs EPOCHS]
                              [--grad_clip GRAD_CLIP] [--adam_lr ADAM_LR]
@@ -49,7 +49,7 @@ from stft import MySTFT, pad_batch
 from torch.utils.data.sampler import SequentialSampler
 
 class ConvTextEncoder(nn.Module):
-    """Text encoder (actually works on phonemes in our case)"""
+    """Encodes input phonemes into keys and values"""
     
     def __init__(self):
         super(ConvTextEncoder, self).__init__()
@@ -90,6 +90,7 @@ class ConvAudioEncoder(nn.Module):
         self.layers = nn.Sequential(*layers)
 
     def generating(self, mode):
+        """Put the module into mode for sequential generation"""
         # reset queues
         for module in self.layers.children():
             if hasattr(module, 'generating'):
@@ -122,7 +123,7 @@ class ConvAudioDecoder(nn.Module):
         self.layers = nn.Sequential(*layers)
 
     def generating(self, mode):
-        # reset queues
+        """Put the module into mode for sequential generation"""
         for module in self.layers.children():
             if hasattr(module, 'generating'):
                 module.generating(mode)
@@ -244,8 +245,10 @@ class DurationExtractor(nn.Module):
 
     def forward(self, phonemes, spectrograms, len_phonemes, training=False):
         """
-        :param inputs: text - (batch, alphabet, time), spectrogram:(batch, freq, time)
-        :return:
+        :param phonemes: (batch, alphabet, time), padded phonemes
+        :param spectrograms: (batch, freq, time), padded spectrograms
+        :param len_phonemes: list of phoneme lengths
+        :return: decoded_spectrograms, attention_weights
         """
         spectrs = ZeroPad2d((0,0,1,0))(spectrograms)[:, :-1, :]  # move this to encoder?
         keys, values = self.txt_encoder(phonemes)
@@ -264,7 +267,7 @@ class DurationExtractor(nn.Module):
         return decoded, weights
 
     def generating(self, mode):
-        # reset queues
+        """Put the module into mode for sequential generation"""
         for module in self.children():
             if hasattr(module, 'generating'):
                 module.generating(mode)
