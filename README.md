@@ -44,12 +44,12 @@ wget https://github.com/janvainer/speedyspeech/releases/download/v0.1/speedyspee
 2. Run inference
 ```
 mkdir synthesized_audio
-echo "One sentence. \nAnother sentence. | python code/inference.py --audio_folder ~/synthesized_audio
+echo "One sentence. \nAnother sentence. | python code/inference.py --audio_folder synthesized_audio
 ```
 The model treats each line of input as an item in a batch.
 To specify different checkpoints, what device to run on etc. use the following:
 ```
-echo "One sentence. \nAnother sentence. | python code/inference.py <speedyspeech_checkpoint> <melgan_checkpoint> --audio_folder ~/synthesized_audio --device cuda
+echo "One sentence. \nAnother sentence. | python code/inference.py <speedyspeech_checkpoint> <melgan_checkpoint> --audio_folder synthesized_audio --device cuda
 ```
 
 Files wil be added to the audio folder. The model does not handle numbers. please write everything in words.
