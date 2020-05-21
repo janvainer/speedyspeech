@@ -39,7 +39,7 @@ wget -O checkpoints/melgan.pth \
 **2. Download pretrained SpeedySpeech** checkpoint from the latest release.
 ```
 wget -O checkpoints/speedyspeech.pth \
-    https://github.com/janvainer/speedyspeech/releases/download/v0.1/speedyspeech.pth 
+    https://github.com/janvainer/speedyspeech/releases/download/latest/speedyspeech.pth 
 ```
 
 **3. Run inference**
