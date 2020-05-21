@@ -23,7 +23,6 @@ The code was tested with `python 3.7.3` and `cuda 10.0.130` on Ubuntu 19.04.
 ```
 git clone https://github.com/janvainer/speedyspeech.git
 cd speedyspeech
-git submodule init; git submodule update
 
 python3 -m venv venv
 source venv/bin/activate
