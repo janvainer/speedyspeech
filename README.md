@@ -64,7 +64,7 @@ Files wil be added to the audio folder. The model does not handle numbers. pleas
 The list of allowed symbols is specified in ```code/hparam.py```. 
 
 ### Training
-To train the fertility model, durations of phonemes are needed.
+To train speedyspeech, durations of phonemes are needed.
 
 1. Download the [LJSpeech dataset](https://keithito.com/LJ-Speech-Dataset/) and unzip into `datasets/data/LJSpeech-1.1`
 2. Train the duration extraction model
@@ -78,7 +78,7 @@ tensorboard --logdir=logs
 ```
 python code/extract_durations.py logs/your_checkpoint code/datasets/data/LJSpeech-1.1
 ```
-4. Train the fertility model
+4. Train SpeedySpeech
 ```
 python code/speedyspeech.py -h
 python code/speedyspeech.py
