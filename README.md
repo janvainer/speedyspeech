@@ -68,7 +68,7 @@ To train speedyspeech, durations of phonemes are needed.
 ```
 wget -O code/datasets/data/LJSpeech-1.1.tar.bz2 \
     https://data.keithito.com/data/speech/LJSpeech-1.1.tar.bz2
-tar xjf code/datasets/data/LJSpeech-1.1.tar.bz2
+tar xjf code/datasets/data/LJSpeech-1.1.tar.bz2 code/datasets/data/LJSpeech-1.1
 ```
 **2. Train the duration extraction model**
 ```
