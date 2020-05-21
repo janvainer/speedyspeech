@@ -1,3 +1,21 @@
+"""Extract durations for the LJSpeech dataset
+
+usage: extract_durations.py [-h] [--durations_filename DURATIONS_FILENAME]
+                            [--batch_size BATCH_SIZE]
+                            checkpoint data_folder
+
+positional arguments:
+  checkpoint            Path to checkpoint of convolutional_cacotron model
+  data_folder           Where the data live and where to save durations.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --durations_filename DURATIONS_FILENAME
+                        Name of the final durations file.
+  --batch_size BATCH_SIZE
+                        Batch size
+"""
+
 import os
 
 import torch
@@ -5,8 +23,9 @@ import numpy as np
 from barbar import Bar  # progress bar
 
 def save_alignments_as_fertilities(model, dataloader, folder, durations_filename):
-    """
-
+    """Save extracted alignments as durations
+    
+    Use the duration_Extraction model checkpoint to extract alignments and convert them into durations.
     For dataloader, use get_dataloader(64, 'cuda', start_idx=0, end_idx=13099, shuffle=False, sampler=SequentialSampler)
     """
 
@@ -25,7 +44,6 @@ def get_fertilities(alignments, plen, slen):
 
     Values at indices correspond to fertilities for the phoneme at the given index.
 
-
     :param alignments: (batch, time, phoneme_len)
     :param plen: original phoneme length of each sentence in batch before padding
     :param slen: original spectrogram length before padding
@@ -35,7 +53,6 @@ def get_fertilities(alignments, plen, slen):
     fert = smooth_fertilities(fert, slen)
     return fert
 
-# TODO: unify - either use only numpy or only tensor
 def fertilities_improper(alignments, plen, slen):
     """Phonemes not attended to get fertility one -> sum of fertilities may not equal slen
 
