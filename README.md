@@ -79,5 +79,6 @@ python code/extract_durations.py logs/your_checkpoint code/datasets/data/LJSpeec
 ```
 python code/speedyspeech.py -h
 python code/speedyspeech.py
+    --some_option some_value
 tensorboard --logdir=logs2
 ```
