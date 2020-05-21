@@ -8,8 +8,7 @@ from utils.masked import MaskedBatchNorm1d
 
 
 class Conv1d(nn.Conv1d):
-    """A wrapper around nn.Conv1d, that works on (batch, time, channels)
-    """
+    """A wrapper around nn.Conv1d, that works on (batch, time, channels)"""
 
     def __init__(self, in_channels, out_channels, kernel_size=1, stride=1, dilation=1, groups=1, bias=True, padding=0):
         super(Conv1d, self).__init__(in_channels=in_channels, out_channels=out_channels,
@@ -48,9 +47,7 @@ class FreqNorm(nn.BatchNorm1d):
 
 
 class ResidualBlock(nn.Module):
-    """Implements conv->PReLU->norm n-times
-
-    """
+    """Implements conv->PReLU->norm n-times"""
 
     def __init__(self, channels, kernel_size, dilation,  n=2, norm=FreqNorm, activation=nn.ReLU):
         super(ResidualBlock, self).__init__()
@@ -126,6 +123,7 @@ class Pad(nn.ZeroPad2d):
 
 
 class ZeroTemporalPad(nn.ZeroPad2d):
+    """Pad sequences to equal lentgh in the temporal dimension"""
     def __init__(self, kernel_size, dilation, causal=False):
         total_pad = (dilation * (kernel_size - 1))
 
@@ -138,7 +136,7 @@ class ZeroTemporalPad(nn.ZeroPad2d):
 
 
 class WaveResidualBlock(nn.Module):
-    """
+    """A residual gated block based on WaveNet
                         |-------------------------------------------------------------|
                         |                                                             |
                         |                        |-- conv -- tanh --|                 |
@@ -176,7 +174,10 @@ class WaveResidualBlock(nn.Module):
         self.generate = False
 
     def forward(self, residual):
-        """Forward residual
+        """Feed residual through the WaveBlock
+        
+        Allows layer-level caching for faster sequential inference.
+        See https://github.com/tomlepaine/fast-wavenet for similar tensorflow implementation and original paper.
 
         Non - causal version does not support iterative generation for obvious reasons.
         WARNING: generating must be called before each generated sequence!
