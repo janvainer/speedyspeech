@@ -48,7 +48,6 @@ def nnls(mel_basis, mel_spec, n_iter=5, max_iter_per_step=20, lr=2):
     return X.abs()
 
 
-# CODE adapted from tacotron 2 repo - https://github.com/NVIDIA/tacotron2/blob/fc0cf6a89a47166350b65daa1beaa06979e4cddf/layers.py
 class MySTFT(torch.nn.Module):
     def __init__(self,
             n_fft=hp.n_fft,  # filter length
@@ -136,18 +135,3 @@ class MySTFT(torch.nn.Module):
 
     def mel2linear(self, mel):
         return nnls(self.mel_basis, mel)
-
-
-if __name__ == '__main__':
-    from librosa.core import load
-    from librosa.output import write_wav
-
-    wavs = [f'/media/jan/Data/datasets/LJSpeech-1.1/wavs/LJ002-000{i}.wav' for i in range(1,10)]
-    audios = [load(w)[0] for w in wavs]
-    s = MySTFT().to('cuda')
-
-    mel, slen = s.wav2spec(audios)
-    signal, wlen = s.spec2wav(mel, slen)
-
-    for i, a in enumerate(signal.detach().cpu().numpy()):
-        write_wav(f'/home/jan/convolutional_tts/audios/{i}.wav', a, 22050, norm=False)
