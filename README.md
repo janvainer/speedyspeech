@@ -33,16 +33,16 @@ pip install -r requirements.txt
 ### Inference
 1. Download pretrained MelGAN checkpoint and set git head to the right commit
 ```
-wget https://github.com/seungwonpark/melgan/releases/download/v0.1-alpha/nvidia_tacotron2_LJ11_epoch3200.pt \
-    -O checkpoints/melgan.pt
+wget -O checkpoints/melgan.pth \
+    https://github.com/seungwonpark/melgan/releases/download/v0.1-alpha/nvidia_tacotron2_LJ11_epoch3200.pt 
 cd code/melgan
 git checkout 36d5071
 ```
 
 2. Download SpeedySpeech checkpoint from the latest release.
 ```
-wget https://github.com/janvainer/speedyspeech/releases/download/v0.1/speedyspeech.pth \
-    -O checkpoints/speedyspeech.pth
+wget -O checkpoints/speedyspeech.pth \
+    https://github.com/janvainer/speedyspeech/releases/download/v0.1/speedyspeech.pth 
 ```
 
 2. Run inference
@@ -67,6 +67,11 @@ The list of allowed symbols is specified in ```code/hparam.py```.
 To train speedyspeech, durations of phonemes are needed.
 
 1. Download the [LJSpeech dataset](https://keithito.com/LJ-Speech-Dataset/) and unzip into `datasets/data/LJSpeech-1.1`
+```
+wget -O code/datasets/data/LJSpeech-1.1.tar.bz2 \ 
+    https://data.keithito.com/data/speech/LJSpeech-1.1.tar.bz2
+tar xjf code/datasets/data/LJSpeech-1.1.tar.bz2
+```
 2. Train the duration extraction model
 ```
 python code/duration_extractor.py -h  # display options
