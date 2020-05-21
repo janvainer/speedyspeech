@@ -82,3 +82,5 @@ python code/speedyspeech.py
     --some_option some_value
 tensorboard --logdir=logs2
 ```
+## License
+This code is published under the BSD 3-Clause License except for the following:
