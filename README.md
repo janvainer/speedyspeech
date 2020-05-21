@@ -66,7 +66,7 @@ To train speedyspeech, durations of phonemes are needed.
 
 **1. Download the [LJSpeech dataset](https://keithito.com/LJ-Speech-Dataset/)** and unzip into `datasets/data/LJSpeech-1.1`
 ```
-wget -O code/datasets/data/LJSpeech-1.1.tar.bz2 \ 
+wget -O code/datasets/data/LJSpeech-1.1.tar.bz2 \
     https://data.keithito.com/data/speech/LJSpeech-1.1.tar.bz2
 tar xjf code/datasets/data/LJSpeech-1.1.tar.bz2
 ```
@@ -85,7 +85,7 @@ python code/extract_durations.py logs/your_checkpoint code/datasets/data/LJSpeec
 **4. Train SpeedySpeech**
 ```
 python code/speedyspeech.py -h
-python code/speedyspeech.py
+python code/speedyspeech.py \
     --durations_filename my_durations.txt
 tensorboard --logdir=logs2
 ```
