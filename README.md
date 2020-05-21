@@ -1,4 +1,4 @@
-## SpeedySpeech
+# SpeedySpeech
 
 While recent neural sequence-to-sequence models have greatly improved the quality of speech synthesis, 
 there has not been a system capable of 
@@ -17,7 +17,7 @@ Listen to our audio samples [here](https://janvainer.github.io/speedyspeech/).
 <a href="url"><img src="https://github.com/janvainer/speedyspeech/blob/master/img/speedyspeech.png" align="middle" height="360" ></a>
 
 
-### Installation instructions
+## Installation instructions
 The code was tested with `python 3.7.3` and `cuda 10.0.130` on Ubuntu 19.04.
 
 ```
@@ -30,8 +30,8 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### Inference
-1. Download pretrained MelGAN checkpoint and set git head to the right commit
+## Inference
+**1. Download pretrained MelGAN** checkpoint and set git head to the right commit
 ```
 wget -O checkpoints/melgan.pth \
     https://github.com/seungwonpark/melgan/releases/download/v0.1-alpha/nvidia_tacotron2_LJ11_epoch3200.pt 
@@ -39,13 +39,13 @@ cd code/melgan
 git checkout 36d5071
 ```
 
-2. Download SpeedySpeech checkpoint from the latest release.
+**2. Download pretrained SpeedySpeech** checkpoint from the latest release.
 ```
 wget -O checkpoints/speedyspeech.pth \
     https://github.com/janvainer/speedyspeech/releases/download/v0.1/speedyspeech.pth 
 ```
 
-2. Run inference
+**3. Run inference**
 ```
 mkdir synthesized_audio
 echo "One sentence. \nAnother sentence." | python code/inference.py --audio_folder synthesized_audio
@@ -63,27 +63,27 @@ echo "One sentence. \nAnother sentence." | python code/inference.py \
 Files wil be added to the audio folder. The model does not handle numbers. please write everything in words.
 The list of allowed symbols is specified in ```code/hparam.py```. 
 
-### Training
+## Training
 To train speedyspeech, durations of phonemes are needed.
 
-1. Download the [LJSpeech dataset](https://keithito.com/LJ-Speech-Dataset/) and unzip into `datasets/data/LJSpeech-1.1`
+**1. Download the [LJSpeech dataset](https://keithito.com/LJ-Speech-Dataset/)** and unzip into `datasets/data/LJSpeech-1.1`
 ```
 wget -O code/datasets/data/LJSpeech-1.1.tar.bz2 \ 
     https://data.keithito.com/data/speech/LJSpeech-1.1.tar.bz2
 tar xjf code/datasets/data/LJSpeech-1.1.tar.bz2
 ```
-2. Train the duration extraction model
+**2. Train the duration extraction model**
 ```
 python code/duration_extractor.py -h  # display options
 python code/duration_extractor.py \
     --some_option value
 tensorboard --logdir=logs
 ```
-3. Extract durations from the trained model - creates alignments.txt file in the LJSpeech-1.1 folder
+**3. Extract durations from the trained model** - creates alignments.txt file in the LJSpeech-1.1 folder
 ```
 python code/extract_durations.py logs/your_checkpoint code/datasets/data/LJSpeech-1.1 --durations_filename my_durations.txt
 ```
-4. Train SpeedySpeech
+**4. Train SpeedySpeech**
 ```
 python code/speedyspeech.py -h
 python code/speedyspeech.py
