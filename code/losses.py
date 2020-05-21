@@ -8,10 +8,10 @@ from functional import mask
 
 
 class GuidedAttentionLoss(torch.nn.Module):
-
+    """The guided attention loss from https://arxiv.org/abs/1710.08969"""
     def __init__(self, sigma):
         super(GuidedAttentionLoss, self).__init__()
-        self.sigma = sigma
+        self.sigma = sigma  # strength of the loss
 
     def forward(self, attention_weights, len_rows, len_cols):
         """
@@ -57,8 +57,8 @@ def l1_masked(input, target, lengths):
 
 def l1_dtw(input, ilen, target, tlen):
     """l1 loss after dynamic time warping of the corresponding spectrograms
-
-    TODO: this can not be used as loss - make metrics script and move it there
+    
+    This is not a loss in true sence since it is not differentiable - it is a metric.
     :param input: (batch, time, channels)
     :param target: (batch, time, channels)
     :return:
