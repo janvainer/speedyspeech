@@ -1,7 +1,8 @@
 """Usage
+Run from the project root.
 
-echo "One sentence. \nAnother sentence. | python inference.py checkpoint1 checkpoint2 --device cuda --audio_folder ~/audio
-cat text.txt | python inference.py checkpoint1 checkpoint2 --device cuda
+echo "One sentence. \nAnother sentence. | python code/inference.py checkpoint1 checkpoint2 --device cuda --audio_folder ~/audio
+cat text.txt | python code/inference.py checkpoint1 checkpoint2 --device cuda
 Audios are by default saved to ~/audio
 
 Does not handle numbers - write everything in words.
@@ -18,8 +19,8 @@ from utils.text import TextProcessor
 from functional import mask
 
 parser = argparse.ArgumentParser()
-parser.add_argument("speedyspeech_checkpoint", type=str, help="Checkpoint file for speedyspeech model")
-parser.add_argument("melgan_checkpoint", type=str, help="Checkpoint file for MelGan.")
+parser.add_argument("--speedyspeech_checkpoint", default='checkpoints/speedyspeech.pth', type=str, help="Checkpoint file for speedyspeech model")
+parser.add_argument("--melgan_checkpoint", default='checkpoints/melgan.pt', type=str, help="Checkpoint file for MelGan.")
 parser.add_argument("--device", type=str, default='cuda' if torch.cuda.is_available() else 'cpu',  help="What device to use.")
 parser.add_argument("--audio_folder", type=str, default="synthesized_audio", help="Where to save audios")
 args = parser.parse_args()
