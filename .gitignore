@@ -3,7 +3,7 @@ venv
 __pycache__
 *.egg-info
 *.log
-code/datasets/data/*
+code/datasets/data/LJSpeech-1.1
 logs*
 logs2*
 train_on_cluster.sh
