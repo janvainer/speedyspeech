@@ -14,6 +14,12 @@ CPU.
 
 See our audio samples [here](https://janvainer.github.io/speedyspeech/).
 
+<object data="https://raw.githubusercontent.com/janvainer/speedyspeech/blob/master/img/speedy_speech.pdf" type="application/pdf" width="700px" height="700px">
+    <embed src="https://raw.githubusercontent.com/janvainer/speedyspeech/blob/master/img/speedy_speech.pdf">
+        <p>This browser does not support PDFs. Please download the PDF to view it: <a href="https://raw.githubusercontent.com/janvainer/speedyspeech/blob/master/img/speedy_speech.pdf">Download PDF</a>.</p>
+    </embed>
+</object>
+
 ### Installation instructions
 The code was tested with `python 3.7.3` and `cuda 10.0.130` on Ubuntu 19.04.
 
