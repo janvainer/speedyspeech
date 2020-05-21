@@ -35,8 +35,6 @@ pip install -r requirements.txt
 ```
 wget -O checkpoints/melgan.pth \
     https://github.com/seungwonpark/melgan/releases/download/v0.1-alpha/nvidia_tacotron2_LJ11_epoch3200.pt 
-cd code/melgan
-git checkout 36d5071
 ```
 
 **2. Download pretrained SpeedySpeech** checkpoint from the latest release.
