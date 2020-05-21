@@ -48,12 +48,12 @@ wget -O checkpoints/speedyspeech.pth \
 2. Run inference
 ```
 mkdir synthesized_audio
-echo "One sentence. \nAnother sentence. | python code/inference.py --audio_folder synthesized_audio
+echo "One sentence. \nAnother sentence." | python code/inference.py --audio_folder synthesized_audio
 ```
 The model treats each line of input as an item in a batch.
 To specify different checkpoints, what device to run on etc. use the following:
 ```
-echo "One sentence. \nAnother sentence. | python code/inference.py \
+echo "One sentence. \nAnother sentence." | python code/inference.py \
     --speedyspeech_checkpoint <speedyspeech_checkpoint> \
     --melgan_checkpoint <melgan_checkpoint> \
     --audio_folder synthesized_audio \
