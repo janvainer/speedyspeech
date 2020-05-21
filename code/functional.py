@@ -29,11 +29,11 @@ def scaled_dot_attention(q, k, v, mask=None, noise=0, dropout=lambda x: x):
 
 
 def positional_encoding(channels, length, w=1):
-    """
+    """The positional encoding from `Attention is all you need` paper
 
-    :param channels:
-    :param length:
-    :param w:
+    :param channels: How many channels to use
+    :param length: 
+    :param w: Scaling factor
     :return:
     """
     enc = torch.FloatTensor(length, channels)
@@ -51,7 +51,7 @@ def median(distribution, keepdim=True):
 
 
 def median_mask(distribution, window=(5,5)):
-    """distribution of shape (batch, time, channels)"""
+    """Expects distribution of shape (batch, time, channels)"""
     med = median(distribution)
     m = torch.ones(distribution.shape).float() * torch.arange(distribution.shape[-1]).float()
     m = m.to(distribution.device)
@@ -62,7 +62,7 @@ def median_mask(distribution, window=(5,5)):
 def idx_mask(shape, idx, size):
     """
 
-    :param distribution:
+    :param distribution: (batch, time, channels)
     :param idx: (batch, len_spectrograms, 1) eg torch.argmax(weights).unsqueeze(-1)
     :param size:
     :return:
