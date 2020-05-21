@@ -1,3 +1,27 @@
+"""The duration extraction teacher model
+
+By running this script, the duration extraction model is trained.
+
+usage: duration_extractor.py [-h] [--batch_size BATCH_SIZE] [--epochs EPOCHS]
+                             [--grad_clip GRAD_CLIP] [--adam_lr ADAM_LR]
+                             [--warmup_epochs WARMUP_EPOCHS]
+                             [--from_checkpoint FROM_CHECKPOINT] [--name NAME]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --batch_size BATCH_SIZE
+                        Batch size
+  --epochs EPOCHS       Training epochs
+  --grad_clip GRAD_CLIP
+                        Gradient clipping value
+  --adam_lr ADAM_LR     Initial learning rate for adam
+  --warmup_epochs WARMUP_EPOCHS
+                        Warmup epochs for NoamScheduler
+  --from_checkpoint FROM_CHECKPOINT
+                        Checkpoint file path
+  --name NAME           Append to logdir name
+"""
+
 import torch.nn as nn                     # neural networks
 from torch.nn import L1Loss, ZeroPad2d
 from torch.utils.tensorboard import SummaryWriter
@@ -25,6 +49,8 @@ from stft import MySTFT, pad_batch
 from torch.utils.data.sampler import SequentialSampler
 
 class ConvTextEncoder(nn.Module):
+    """Text encoder (actually works on phonemes in our case)"""
+    
     def __init__(self):
         super(ConvTextEncoder, self).__init__()
 
@@ -49,6 +75,7 @@ class ConvTextEncoder(nn.Module):
 
 
 class ConvAudioEncoder(nn.Module):
+    """Encodes input spectrograms into queries"""
     def __init__(self):
         super(ConvAudioEncoder, self).__init__()
 
@@ -73,6 +100,7 @@ class ConvAudioEncoder(nn.Module):
 
 
 class ConvAudioDecoder(nn.Module):
+    """Decodes result of attention layer into spectrogram"""
     def __init__(self):
         super(ConvAudioDecoder, self).__init__()
 
@@ -104,6 +132,7 @@ class ConvAudioDecoder(nn.Module):
 
 
 class ScaledDotAttention(nn.Module):
+    """Scaled dot attention with positional encoding preconditioning"""
 
     def __init__(self):
         super(ScaledDotAttention, self).__init__()
@@ -139,6 +168,7 @@ class ScaledDotAttention(nn.Module):
 
 
 class DurationExtractor(nn.Module):
+    """The teacher model for duration extraction"""
     def __init__(
             self,
             adam_lr=0.002,
@@ -240,17 +270,18 @@ class DurationExtractor(nn.Module):
                 module.generating(mode)
 
     def generate(self, phonemes, len_phonemes, steps=False, window=3, spectrograms=None):
-        """
-
-        If spectrograms are provided, they are used on input instead of self-generated frames
+        """Sequentially generate spectrogram from phonemes
+        
+        If spectrograms are provided, they are used on input instead of self-generated frames (teacher forcing)
         If steps are provided with spectrograms, only 'steps' frames will be generated in supervised fashion
+        Uses layer-level caching for faster inference.
 
-        :param phonemes:
-        :param len_phonemes:
-        :param steps:
-        :param window:
-        :param spectrograms:
-        :return:
+        :param phonemes: Padded phoneme indices
+        :param len_phonemes: Length of each sentence in `phonemes` (list of lengths)
+        :param steps: How many steps to generate
+        :param window: Window size for attention masking
+        :param spectrograms: Padded spectrograms
+        :return: Generated spectrograms
         """
         self.generating(True)
         self.train(False)
@@ -303,6 +334,8 @@ class DurationExtractor(nn.Module):
         return decoded, weights
 
     def generate_naive(self, phonemes, len_phonemes, steps=1, window=(0,1)):
+        """Naive generation without layer-level caching for testing purposes"""
+                                       
         self.train(False)
 
         with torch.no_grad():
