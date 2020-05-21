@@ -308,8 +308,11 @@ class SpeedySpeech(nn.Module):
             },
             self.checkpoint)
 
-    def load(self, checkpoint):
-        checkpoint = torch.load(checkpoint)
+    def load(self, checkpoint, map_location=False):
+        if map_location:
+            checkpoint = torch.load(checkpoint, map_location=map_location)
+        else:
+            checkpoint = torch.load(checkpoint)
         self.epoch = checkpoint['epoch']
         self.step = checkpoint['step']
         self.load_state_dict(checkpoint['state_dict'])
