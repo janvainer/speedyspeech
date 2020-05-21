@@ -27,6 +27,34 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
+### Inference
+1. Download pretrained MelGAN checkpoint and set git head to the right commit
+```
+wget https://github.com/seungwonpark/melgan/releases/download/v0.1-alpha/nvidia_tacotron2_LJ11_epoch3200.pt \
+    -O checkpoints/melgan.pt
+cd code/melgan
+git checkout 36d5071
+```
+
+2. Download SpeedySpeech checkpoint from the latest release.
+```
+wget https://github.com/janvainer/speedyspeech/releases/download/v0.1/speedyspeech.pth -O checkpoints/speedyspeech.pth
+```
+
+2. Run inference
+```
+mkdir synthesized_audio
+echo "One sentence. \nAnother sentence. | python code/inference.py --audio_folder ~/synthesized_audio
+```
+The model treats each line of input as an item in a batch.
+To specify different checkpoints, what device to run on etc. use the following:
+```
+echo "One sentence. \nAnother sentence. | python code/inference.py <speedyspeech_checkpoint> <melgan_checkpoint> --audio_folder ~/synthesized_audio --device cuda
+```
+
+Files wil be added to the audio folder. The model does not handle numbers. please write everything in words.
+The list of allowed symbols is specified in ```code/hparam.py```. 
+
 ### Training
 To train the fertility model, durations of phonemes are needed.
 
@@ -47,21 +75,3 @@ python code/speedyspeech.py -h  # display options
 python code/speedyspeech.py  # train the model, create logs2 for checkpoint
 tensorboard --logdir=logs2  # watch the training
 ```
-
-### Inference
-1. Download pretrained MelGAN checkpoint and set git head to the right commit
-```
-wget https://github.com/seungwonpark/melgan/releases/download/v0.1-alpha/nvidia_tacotron2_LJ11_epoch3200.pt \
-    -O code/checkpoints/melgan_checkpoint.pt
-cd code/melgan
-git checkout 36d5071
-```
-
-2. Run inference
-```
-mkdir synthesized_audio
-echo "One sentence. \nAnother sentence. | python code/inference.py <speedyspeech_checkpoint> <melgan_checkpoint> --audio_folder ~/synthesized_audio
-cat text.txt | python code/inference.py <speedyspeech_checkpoint> <melgan_checkpoint> --device cuda
-```
-Files wil be added to the audio folder. The model does not handle numbers. please write everything in words.
-The list of allowed symbols is specified in ```code/hparam.py```. 
