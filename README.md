@@ -12,7 +12,7 @@ Coupled with a MelGAN vocoder, our model's voice quality was rated significantly
 Our model can be efficiently trained on a single GPU and can run in real time even on a 
 CPU.
 
-See our audio samples [here](https://janvainer.github.io/speedyspeech/).
+Listen to our audio samples [here](https://janvainer.github.io/speedyspeech/).
 
 <a href="url"><img src="https://github.com/janvainer/speedyspeech/blob/master/img/speedyspeech.png" align="middle" height="360" ></a>
 
