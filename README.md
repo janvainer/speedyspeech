@@ -8,7 +8,7 @@ We propose a student-teacher network
 capable of high-quality faster-than-real-time spectrogram synthesis, with low requirements on computational resources and fast training time.
 We show that self-attention layers are not necessary for generation of high quality audio. 
 We utilize simple convolutional blocks with residual connections in both student and teacher networks and use only a single attention layer in the teacher model.
-Coupled with a MelGAN vocoder, our model's voice quality was rated significantly higher than Tacotron~2.
+Coupled with a MelGAN vocoder, our model's voice quality was rated significantly higher than Tacotron2.
 Our model can be efficiently trained on a single GPU and can run in real time even on a 
 CPU.
 
