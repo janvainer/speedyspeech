@@ -432,12 +432,12 @@ class DurationExtractor(nn.Module):
         return t_l1/i, t_att/i
 
     def train_dataloader(self, batch_size):
-        return DataLoader(AudioDataset(HPText.dataset, start_idx=0, end_idx=HPText.num_train, alignments=False), batch_size=batch_size,
+        return DataLoader(AudioDataset(HPText.dataset, start_idx=0, end_idx=HPText.num_train, durations=False), batch_size=batch_size,
                           collate_fn=self.collate,
                           shuffle=True)
 
     def val_dataloader(self, batch_size):
-        dataset = AudioDataset(HPText.dataset, start_idx=HPText.num_train, end_idx=HPText.num_valid, alignments=False)
+        dataset = AudioDataset(HPText.dataset, start_idx=HPText.num_train, end_idx=HPText.num_valid, durations=False)
         return DataLoader(dataset, batch_size=batch_size,
                           collate_fn=self.collate,
                           shuffle=False, sampler=SequentialSampler(dataset))

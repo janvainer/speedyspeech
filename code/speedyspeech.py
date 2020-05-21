@@ -181,7 +181,8 @@ class SpeedySpeech(nn.Module):
             self,
             adam_lr=0.02,
             standardize=True,
-            device='cuda'
+            device='cuda',
+            durations_file='durations.txt'
     ):
         super(SpeedySpeech, self).__init__()
 
@@ -213,6 +214,7 @@ class SpeedySpeech(nn.Module):
         self.checkpoint = None
         self.epoch = 0
         self.step = 0
+        self.durations_file = durations_file
 
         repo = git.Repo(search_parent_directories=True)
         self.git_commit = repo.head.object.hexsha
@@ -385,12 +387,12 @@ class SpeedySpeech(nn.Module):
         return t_l1, t_huber
 
     def train_dataloader(self, batch_size):
-        return DataLoader(AudioDataset(HPText.dataset, start_idx=0, end_idx=HPText.num_train, alignments=True), batch_size=batch_size,
+        return DataLoader(AudioDataset(HPText.dataset, start_idx=0, end_idx=HPText.num_train, durations=self.durations_file), batch_size=batch_size,
                           collate_fn=self.collate,
                           shuffle=True)
 
     def val_dataloader(self, batch_size):
-        dataset = AudioDataset(HPText.dataset, start_idx=HPText.num_train, end_idx=HPText.num_valid, alignments=True)
+        dataset = AudioDataset(HPText.dataset, start_idx=HPText.num_train, end_idx=HPText.num_valid, durations=self.durations_file)
         return DataLoader(dataset, batch_size=batch_size,
                           collate_fn=self.collate,
                           shuffle=False, sampler=SequentialSampler(dataset))
@@ -431,12 +433,14 @@ if __name__ == '__main__':
     parser.add_argument("--adam_lr", default=0.002, type=int, help="Initial learning rate for adam")
     parser.add_argument("--standardize", default=True, type=bool, help="Standardize spectrograms")
     parser.add_argument("--name", default="", type=str, help="Append to logdir name")
+    parser.add_argument("--durations_filename", default="durations.txt", type=str, help="Name for extracted dutations file")
     args = parser.parse_args()
 
     m = SpeedySpeech(
         adam_lr=args.adam_lr,
         standardize=args.standardize,
-        device='cuda' if torch.cuda.is_available() else 'cpu'
+        device='cuda' if torch.cuda.is_available() else 'cpu',
+        durations_file=args.durations_filename
     )
 
     m.fit(

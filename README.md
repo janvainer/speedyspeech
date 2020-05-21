@@ -81,13 +81,13 @@ tensorboard --logdir=logs
 ```
 3. Extract durations from the trained model - creates alignments.txt file in the LJSpeech-1.1 folder
 ```
-python code/extract_durations.py logs/your_checkpoint code/datasets/data/LJSpeech-1.1
+python code/extract_durations.py logs/your_checkpoint code/datasets/data/LJSpeech-1.1 --durations_filename my_durations.txt
 ```
 4. Train SpeedySpeech
 ```
 python code/speedyspeech.py -h
 python code/speedyspeech.py
-    --some_option some_value
+    --durations_filename my_durations.txt
 tensorboard --logdir=logs2
 ```
 ## License

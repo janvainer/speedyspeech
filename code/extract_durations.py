@@ -4,18 +4,13 @@ import torch
 import numpy as np
 from barbar import Bar  # progress bar
 
-def save_alignments_as_fertilities(model, dataloader, folder):
+def save_alignments_as_fertilities(model, dataloader, folder, durations_filename):
     """
 
     For dataloader, use get_dataloader(64, 'cuda', start_idx=0, end_idx=13099, shuffle=False, sampler=SequentialSampler)
-
-    :param model:
-    :param dataloader: Loads data in-order
-    :param folder:
-    :return:
     """
 
-    with open(os.path.join(folder, 'alignments.txt'), 'w') as file:
+    with open(os.path.join(folder, durations_filename), 'w') as file:
         for i, batch in enumerate(Bar(dataloader)):
             spectrs, slen, phonemes, plen, text = batch
             # supervised generation to get more reliable alignments
@@ -140,14 +135,15 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
     parser.add_argument("checkpoint", type=str, help="Path to checkpoint of convolutional_cacotron model")
-    parser.add_argument("data_folder", type=str, help="Where the data live and where to save alignments.")
+    parser.add_argument("data_folder", type=str, help="Where the data live and where to save durations.")
+    parser.add_argument("--durations_filename", default='durations.txt', type=str, help="Name of the final durations file.")
     parser.add_argument("--batch_size", default=64, type=int, help="Batch size")
     args = parser.parse_args()
 
     # Load pretrained checkpoint and extract alignments to data_folder
     m = DurationExtractor().load(args.checkpoint)
-    dataset = AudioDataset(root=args.data_folder, alignments=False)
+    dataset = AudioDataset(root=args.data_folder, durations=False)
     dataloader = DataLoader(dataset, batch_size=args.batch_size, collate_fn=Collate(m.device),
                       shuffle=False, sampler=SequentialSampler(dataset))
 
-    save_alignments_as_fertilities(m, dataloader, args.data_folder)
+    save_alignments_as_fertilities(m, dataloader, args.data_folder, args.durations_filename)
