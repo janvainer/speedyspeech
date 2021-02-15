@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block head %}
+{% endblock %}
+
+{% block body %}
+  <input type="text" id="textInput">
+  <button type="button" name="button" onclick="synt()">Synthesize text</button>
+  <br>
+  <audio id="audio" controls class="hidden">
+    <source id="audioSource" src="" onload="" type="audio/mpeg">
+  </audio>
+{% endblock %}

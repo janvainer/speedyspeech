@@ -60,6 +60,33 @@ printf "One sentence. \nAnother sentence.\n" | python code/inference.py \
 Files wil be added to the audio folder. The model does not handle numbers. please write everything in words.
 The list of allowed symbols is specified in ```code/hparam.py```. 
 
+**4. Run inference server**
+- Place SpeedySpeech and MelGAN checkpoints in the `checkpoints` folder.
+```
+checkpoints/
+    melgan.pth
+    speedyspeech.pth
+```
+And run the following commands. You should be able to open a simple webpage where you can
+try to synthesize custom sentences.
+```
+cd code
+python server/app.py  # go to http://127.0.0.1:5000/
+python server/app.py --help
+
+    usage: app.py [-h] [--speedyspeech_checkpoint SPEEDYSPEECH_CHECKPOINT]
+        [--melgan_checkpoint MELGAN_CHECKPOINT] [--device DEVICE]
+
+    optional arguments:
+      -h, --help            show this help message and exit
+      --speedyspeech_checkpoint SPEEDYSPEECH_CHECKPOINT
+                            Checkpoint file for speedyspeech model
+      --melgan_checkpoint MELGAN_CHECKPOINT
+                            Checkpoint file for MelGan.
+      --device DEVICE       What device to use.
+```
+<a href="url"><img src="https://github.com/janvainer/speedyspeech/blob/master/img/browser-inference.png" align="middle" height="180" ></a>
+
 ## Training
 To train speedyspeech, durations of phonemes are needed.
 
