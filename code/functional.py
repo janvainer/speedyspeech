@@ -40,8 +40,8 @@ def positional_encoding(channels, length, w=1):
     rows = torch.arange(length, out=torch.FloatTensor())[:, None]
     cols = 2 * torch.arange(channels//2, out=torch.FloatTensor())
 
-    enc[:, 0::2] = torch.sin(w * rows / (10.0**4 ** (cols / channels)))
-    enc[:, 1::2] = torch.cos(w * rows / (10.0**4 ** (cols / channels)))
+    enc[:, 0::2] = torch.sin(w * rows / ((10.0**4) ** (cols / channels)))
+    enc[:, 1::2] = torch.cos(w * rows / ((10.0**4) ** (cols / channels)))
     return enc
 
 
