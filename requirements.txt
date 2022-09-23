@@ -31,7 +31,7 @@ numba==0.45.1
 numpy==1.18.4
 oauthlib==3.1.0
 Pillow==7.1.2
-protobuf==3.12.1
+protobuf==3.18.3
 pyasn1==0.4.8
 pyasn1-modules==0.2.8
 pycparser==2.20
